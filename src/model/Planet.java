@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class Planet
 {
-	private final int INTERSECTION_THRESHOLD = 10;
-	private final float DENSITY = 2;
+	private final int INTERSECTION_THRESHOLD = 0;
+	private final float DENSITY = 2.0f;
 	
 	private float xPos;
 	private float yPos;
@@ -52,17 +52,30 @@ public class Planet
 		}
 	}
 	
+	public void update()
+	{
+		xPos += xforce;
+		yPos += yforce;
+	}
+	
 	private float calculateDistance(Planet planet)
 	{
 		float planetx = Math.abs(planet.getXPos() - this.getXPos());
 		float planety = Math.abs(planet.getYPos() - this.getYPos());
 		float c = planetx * planetx + planety * planety;
+		
+		System.out.println("C: " + (float) Math.sqrt(c));
 		return (float) Math.sqrt(c);
 	}
 	
 	public boolean intersects(Planet planet)
 	{
-		return calculateDistance(planet) <= INTERSECTION_THRESHOLD + radius;
+		return calculateDistance(planet) <= planet.getRadius() + radius;
+	}
+	
+	public float getRadius()
+	{
+		return radius;
 	}
 	
 	public float getXPos()
@@ -85,12 +98,12 @@ public class Planet
 		return yforce;
 	}
 	
-	private void setYforce(float xforce)
+	private void setYforce(float yforce)
 	{
 		this.yforce = yforce;
 	}
 	
-	private void setXforce(float f)
+	private void setXforce(float xforce)
 	{
 		this.xforce = xforce;
 	}
@@ -107,7 +120,16 @@ public class Planet
 	
 	public void render(Graphics g)
 	{
-		g.setColor((moves) ? new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255)) : Color.YELLOW);
+		g.setColor((moves) ? Color.BLACK : Color.YELLOW);
 		
+		g.fillOval((int) (xPos-radius), (int) (yPos-radius), (int) (radius * 2), (int) (radius * 2));
+		
+		g.setColor(Color.RED);
+		g.fillOval((int)(xPos)-1, (int)(yPos)-1, 2, 2);
+	}
+	
+	public boolean leavesBounds(int i, int j)
+	{
+		return (xPos > i || xPos < 0 || yPos < 0 || yPos > j);
 	}
 }
