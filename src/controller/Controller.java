@@ -5,12 +5,20 @@ import view.View;
 
 public class Controller
 {
-	private Model model;
 	private View view;
 	
-	public Controller(Model model, View view)
+	public Controller(View view)
 	{
-		this.model = model;
 		this.view = view;
+	}
+	
+	public void startLoop()
+	{
+		new Loop(this).run();
+	}
+	public void update()
+	{
+		// TODO: Genetic Algorithm here-ish?
+		view.update();
 	}
 }
