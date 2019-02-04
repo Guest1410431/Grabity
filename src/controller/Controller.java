@@ -1,6 +1,8 @@
 package controller;
 
+import model.Generation;
 import model.Model;
+import model.Planet;
 import view.View;
 
 public class Controller
